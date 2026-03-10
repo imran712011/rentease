@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RentEase — User Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#1a1208;--cream:#f7f3ec;--warm:#e8ddd0;--accent:#c8541a;--accent2:#e8a020;--muted:#7a6e62;--border:#ddd5c8;--green:#22c55e;--red:#ef4444;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--cream),var(--warm));}
+.login-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:2.5rem;width:370px;box-shadow:0 20px 60px rgba(0,0,0,.08);}
+.login-logo{text-align:center;margin-bottom:1.75rem;}
+.login-logo h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;}
+.login-logo h1 span{color:var(--accent);}
+.login-logo p{color:var(--muted);font-size:.85rem;margin-top:.3rem;}
+.fg{margin-bottom:.8rem;}
+.fg label{display:block;font-size:.82rem;font-weight:600;margin-bottom:.35rem;}
+.fg input,.fg select,.fg textarea{width:100%;padding:.6rem .9rem;border-radius:10px;border:1.5px solid var(--border);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--ink);transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);}
+.fg textarea{resize:vertical;min-height:75px;}
+.btn{padding:.65rem 1.4rem;border-radius:100px;border:none;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-p{background:var(--accent);color:#fff;}.btn-p:hover{background:#a83e10;}
+.btn-s{background:transparent;border:2px solid var(--border);color:var(--ink);}.btn-s:hover{border-color:var(--ink);}
+.btn-xs{padding:.3rem .8rem;border-radius:7px;font-size:.72rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--ink);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-xs:hover{background:var(--warm);}
+.btn-xs.danger{background:#fff5f5;border-color:#fca5a5;color:var(--red);}
+.hint{text-align:center;margin-top:.85rem;font-size:.75rem;color:var(--muted);}
+.hint a{color:var(--accent);cursor:pointer;}
+.app{display:none;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:rgba(247,243,236,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:.85rem 2rem;gap:1rem;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;}
+.nav-logo span{color:var(--accent);}
+.nav-tabs{display:flex;gap:.2rem;flex-wrap:wrap;}
+.nav-tab{padding:.4rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s;}
+.nav-tab:hover{background:var(--warm);color:var(--ink);}
+.nav-tab.active{background:var(--accent);color:#fff;}
+.nav-user{display:flex;align-items:center;gap:.65rem;}
+.uav{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;}
+.uname{font-size:.82rem;font-weight:600;}
+.lb{background:none;border:1.5px solid var(--border);border-radius:8px;padding:.28rem .65rem;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.lb:hover{background:var(--warm);}
+.page{display:none;padding:1.75rem 2rem;max-width:1200px;margin:0 auto;}
+.page.active{display:block;}
+.ph{margin-bottom:1.75rem;}
+.pt{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.25rem;}
+.ps{color:var(--muted);font-size:.88rem;}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.85rem;margin-bottom:1.75rem;}
+.sc{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;}
+.sc-icon{font-size:1.6rem;margin-bottom:.4rem;}
+.sc-val{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
+.sc-label{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+.fr{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.fc{padding:.38rem .9rem;border-radius:100px;border:1.5px solid var(--border);background:#fff;font-size:.78rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s;}
+.fc:hover,.fc.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.1rem;}
+.pc{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .3s;}
+.pc:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08);}
+.pci{height:148px;background:linear-gradient(135deg,var(--cream),var(--warm));display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
+.av-tag{position:absolute;top:9px;right:9px;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.av-yes{background:#e8f5e9;color:#2e7d32;}
+.av-no{background:#ffebee;color:#c62828;}
+.pcb{padding:1rem;}
+.pc-cat{font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem;}
+.pc-name{font-weight:700;font-size:.92rem;margin-bottom:.55rem;}
+.pc-price{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--accent);}
+.pc-price span{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--muted);font-weight:400;}
+.pc-dep{font-size:.72rem;color:var(--muted);margin:.15rem 0 .65rem;}
+.tcs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.8rem;}
+.tc{font-size:.65rem;font-weight:600;padding:2px 7px;border-radius:100px;background:var(--warm);color:var(--muted);}
+.dc{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;}
+.dc-hd{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);}
+.dc-t{font-weight:700;font-size:.88rem;}
+table{width:100%;border-collapse:collapse;}
+th{padding:.58rem .9rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);}
+td{padding:.58rem .9rem;font-size:.8rem;border-bottom:1px solid rgba(221,213,200,.4);}
+tr:last-child td{border-bottom:none;}
+.badge{display:inline-flex;align-items:center;gap:.28rem;padding:2px 7px;border-radius:100px;font-size:.67rem;font-weight:600;}
+.badge.green{background:#e8f5e9;color:#2e7d32;}
+.badge.red{background:#ffebee;color:#c62828;}
+.badge.yellow{background:#fff8e1;color:#f57f17;}
+.badge.blue{background:#e3f2fd;color:#1565c0;}
+.badge.gray{background:var(--warm);color:var(--muted);}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal-ov.open{display:flex;animation:fi .2s;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal-box{background:#fff;border-radius:22px;padding:1.85rem;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;animation:su .25s ease;}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.mh h3{font-family:'Playfair Display',serif;font-size:1.2rem;}
+.cb{background:var(--warm);border:none;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:var(--ink);color:var(--cream);padding:.75rem 1rem;border-radius:12px;font-size:.82rem;display:flex;align-items:center;gap:.5rem;transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.2);}
+.toast.show{transform:translateY(0);opacity:1;}
+.empty{text-align:center;padding:2.5rem;color:var(--muted);}
+.empty-icon{font-size:2.5rem;margin-bottom:.75rem;}
+@media(max-width:768px){nav{padding:.75rem 1rem;flex-wrap:wrap;}.nav-tabs{order:3;width:100%;}.page{padding:1.25rem 1rem;}}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><h1>Rent<span>Ease</span></h1><p>Your Rental Portal</p></div>
+    <div class="fg"><label>Email</label><input id="uE" value="arjun@example.com" placeholder="email@example.com"/></div>
+    <div class="fg"><label>Password</label><input id="uP" type="password" value="pass123" placeholder="••••••••"/></div>
+    <button class="btn btn-p" style="width:100%;margin-top:.5rem" onclick="doLogin()">Sign In</button>
+    <div class="hint">
+      <p>Demo: arjun@example.com / pass123</p>
+      <p style="margin-top:.3rem"><a onclick="window.open('admin.html','_blank')">Admin Dashboard →</a> &nbsp;|&nbsp; <a onclick="window.open('index.html','_blank')">Home</a></p>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="app">
+  <nav>
+    <div class="nav-logo">Rent<span>Ease</span></div>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="switchTab('home',this)">🏠 Home</div>
+      <div class="nav-tab" onclick="switchTab('browse',this)">🛍️ Browse</div>
+      <div class="nav-tab" onclick="switchTab('myrentals',this)">🔑 My Rentals</div>
+      <div class="nav-tab" onclick="switchTab('maintenance',this)">🔧 Maintenance</div>
+      <div class="nav-tab" onclick="switchTab('history',this)">📋 History</div>
+    </div>
+    <div class="nav-user">
+      <div class="uav" id="uAvatar">A</div>
+      <div class="uname" id="uName">User</div>
+      <button class="lb" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div id="tab-home" class="page active">
+    <div class="ph"><div class="pt" id="welcomeMsg">Welcome!</div><div class="ps">Your rental summary</div></div>
+    <div class="sg" id="sumGrid"></div>
+    <div id="homeRentals"></div>
+    <div id="homeMaint"></div>
+  </div>
+
+  <div id="tab-browse" class="page">
+    <div class="ph"><div class="pt">Browse Products</div><div class="ps">Choose your furniture and appliances</div></div>
+    <div class="fr" id="filterRow">
+      <div class="fc active" onclick="applyFilter('All',this)">All</div>
+      <div class="fc" onclick="applyFilter('Furniture',this)">Furniture</div>
+      <div class="fc" onclick="applyFilter('Appliances',this)">Appliances</div>
+      <div class="fc" onclick="applyFilter('Electronics',this)">Electronics</div>
+      <div class="fc" onclick="applyFilter('Bedroom',this)">Bedroom</div>
+    </div>
+    <div class="pg" id="productGrid"></div>
+  </div>
+
+  <div id="tab-myrentals" class="page">
+    <div class="ph"><div class="pt">My Active Rentals</div><div class="ps">Manage your current rentals</div></div>
+    <div id="myRentalsContent"></div>
+  </div>
+
+  <div id="tab-maintenance" class="page">
+    <div class="ph"><div class="pt">Maintenance Requests</div><div class="ps">Report issues and track resolution</div></div>
+    <div style="margin-bottom:1rem;display:flex;justify-content:flex-end"><button class="btn btn-p" onclick="openMaintModal()">+ New Request</button></div>
+    <div id="maintenanceContent"></div>
+  </div>
+
+  <div id="tab-history" class="page">
+    <div class="ph"><div class="pt">Rental History</div><div class="ps">Your complete rental record</div></div>
+    <div id="historyContent"></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalOv" onclick="closeMO(event)">
+  <div class="modal-box">
+    <div class="mh"><h3 id="modalTitle"></h3><button class="cb" onclick="closeModal()">✕</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"><span id="tI"></span><span id="tM"></span></div>
+
+<script>
+// ===================== DATABASE =====================
+const DB_KEY='rentease_db';
+const SEED={"users":[{"id":"u1","name":"Arjun Mehta","email":"arjun@example.com","phone":"9876543210","city":"Pune","joined":"2025-01-10","status":"active","totalRentals":3},{"id":"u2","name":"Priya Sharma","email":"priya@example.com","phone":"9123456780","city":"Bangalore","joined":"2025-02-14","status":"active","totalRentals":1},{"id":"u3","name":"Rohan Das","email":"rohan@example.com","phone":"9988776655","city":"Mumbai","joined":"2024-11-05","status":"active","totalRentals":5},{"id":"u4","name":"Sneha Patel","email":"sneha@example.com","phone":"9871234560","city":"Hyderabad","joined":"2025-03-01","status":"inactive","totalRentals":0},{"id":"u5","name":"Kiran Nair","email":"kiran@example.com","phone":"9654321870","city":"Chennai","joined":"2025-01-22","status":"active","totalRentals":2}],"products":[{"id":"p1","name":"3-Seater Sofa","category":"Furniture","icon":"🛋️","rent":799,"deposit":2400,"tenures":["3","6","12"],"available":true,"stock":8,"totalRented":34},{"id":"p2","name":"Queen Bed Frame","category":"Bedroom","icon":"🛏️","rent":599,"deposit":1800,"tenures":["3","6","12"],"available":true,"stock":12,"totalRented":28},{"id":"p3","name":"Double-Door Fridge","category":"Appliances","icon":"❄️","rent":1199,"deposit":3500,"tenures":["6","12"],"available":true,"stock":6,"totalRented":19},{"id":"p4","name":"Washing Machine","category":"Appliances","icon":"🫧","rent":899,"deposit":2700,"tenures":["3","6","12"],"available":true,"stock":7,"totalRented":22},{"id":"p5","name":"55\" Smart TV","category":"Electronics","icon":"📺","rent":999,"deposit":2999,"tenures":["3","6","12"],"available":true,"stock":9,"totalRented":31},{"id":"p6","name":"Study Desk & Chair","category":"Furniture","icon":"🪑","rent":449,"deposit":1350,"tenures":["3","6"],"available":true,"stock":15,"totalRented":41},{"id":"p7","name":"Dining Table (4-seater)","category":"Furniture","icon":"🍽️","rent":649,"deposit":1950,"tenures":["6","12"],"available":false,"stock":0,"totalRented":14},{"id":"p8","name":"Microwave Oven","category":"Appliances","icon":"📡","rent":349,"deposit":1050,"tenures":["3","6","12"],"available":true,"stock":11,"totalRented":37},{"id":"p9","name":"Air Conditioner 1.5T","category":"Appliances","icon":"🌬️","rent":1499,"deposit":4500,"tenures":["6","12"],"available":true,"stock":5,"totalRented":16},{"id":"p10","name":"Bookshelf (5 tier)","category":"Furniture","icon":"📚","rent":299,"deposit":900,"tenures":["3","6"],"available":true,"stock":20,"totalRented":52},{"id":"p11","name":"Laptop Desk","category":"Furniture","icon":"💻","rent":249,"deposit":750,"tenures":["3","6","12"],"available":true,"stock":18,"totalRented":45},{"id":"p12","name":"Mini Fridge","category":"Appliances","icon":"🧊","rent":599,"deposit":1800,"tenures":["3","6"],"available":true,"stock":9,"totalRented":23}],"rentals":[{"id":"r1","userId":"u1","userName":"Arjun Mehta","productId":"p1","productName":"3-Seater Sofa","tenure":6,"rentPerMonth":799,"deposit":2400,"startDate":"2025-01-15","endDate":"2025-07-15","status":"active","city":"Pune","address":"12 MG Road, Koregaon Park, Pune"},{"id":"r2","userId":"u1","userName":"Arjun Mehta","productId":"p3","productName":"Double-Door Fridge","tenure":6,"rentPerMonth":1199,"deposit":3500,"startDate":"2025-01-15","endDate":"2025-07-15","status":"active","city":"Pune","address":"12 MG Road, Koregaon Park, Pune"},{"id":"r3","userId":"u2","userName":"Priya Sharma","productId":"p6","productName":"Study Desk & Chair","tenure":3,"rentPerMonth":449,"deposit":1350,"startDate":"2025-02-20","endDate":"2025-05-20","status":"active","city":"Bangalore","address":"34 HSR Layout, Bangalore"},{"id":"r4","userId":"u3","userName":"Rohan Das","productId":"p5","productName":"55\" Smart TV","tenure":12,"rentPerMonth":999,"deposit":2999,"startDate":"2024-11-10","endDate":"2025-11-10","status":"active","city":"Mumbai","address":"7 Andheri West, Mumbai"},{"id":"r5","userId":"u3","userName":"Rohan Das","productId":"p4","productName":"Washing Machine","tenure":6,"rentPerMonth":899,"deposit":2700,"startDate":"2024-11-10","endDate":"2025-05-10","status":"returned","city":"Mumbai","address":"7 Andheri West, Mumbai"},{"id":"r6","userId":"u5","userName":"Kiran Nair","productId":"p2","productName":"Queen Bed Frame","tenure":12,"rentPerMonth":599,"deposit":1800,"startDate":"2025-01-25","endDate":"2026-01-25","status":"active","city":"Chennai","address":"88 Anna Nagar, Chennai"},{"id":"r7","userId":"u3","userName":"Rohan Das","productId":"p9","productName":"Air Conditioner 1.5T","tenure":6,"rentPerMonth":1499,"deposit":4500,"startDate":"2025-03-01","endDate":"2025-09-01","status":"active","city":"Mumbai","address":"7 Andheri West, Mumbai"}],"maintenance":[{"id":"m1","rentalId":"r1","userId":"u1","userName":"Arjun Mehta","productName":"3-Seater Sofa","issue":"Cushion torn on right armrest","priority":"medium","status":"open","raisedOn":"2025-03-01","resolvedOn":null},{"id":"m2","rentalId":"r4","userId":"u3","userName":"Rohan Das","productName":"55\" Smart TV","issue":"Remote not working, HDMI port loose","priority":"high","status":"in-progress","raisedOn":"2025-02-28","resolvedOn":null},{"id":"m3","rentalId":"r6","userId":"u5","userName":"Kiran Nair","productName":"Queen Bed Frame","issue":"Squeaking noise from headboard","priority":"low","status":"resolved","raisedOn":"2025-02-10","resolvedOn":"2025-02-14"},{"id":"m4","rentalId":"r7","userId":"u3","userName":"Rohan Das","productName":"Air Conditioner 1.5T","issue":"AC not cooling efficiently below 24°C","priority":"high","status":"open","raisedOn":"2025-03-05","resolvedOn":null}],"deliveries":[{"id":"d1","rentalId":"r1","type":"delivery","scheduledDate":"2025-01-14","status":"completed","agent":"Ravi Kumar"},{"id":"d2","rentalId":"r2","type":"delivery","scheduledDate":"2025-01-14","status":"completed","agent":"Ravi Kumar"},{"id":"d3","rentalId":"r3","type":"delivery","scheduledDate":"2025-02-19","status":"completed","agent":"Suresh B"},{"id":"d4","rentalId":"r4","type":"delivery","scheduledDate":"2025-11-09","status":"completed","agent":"Ajay Rao"},{"id":"d5","rentalId":"r5","type":"pickup","scheduledDate":"2025-05-11","status":"scheduled","agent":"Ajay Rao"},{"id":"d6","rentalId":"r6","type":"delivery","scheduledDate":"2025-01-24","status":"completed","agent":"Mohan S"},{"id":"d7","rentalId":"r7","type":"delivery","scheduledDate":"2025-02-28","status":"completed","agent":"Ravi Kumar"}]};
+const DB={_g(){try{const r=localStorage.getItem(DB_KEY);if(!r){this._s();return JSON.parse(JSON.stringify(SEED));}return JSON.parse(r);}catch(e){return JSON.parse(JSON.stringify(SEED));}},_sv(d){localStorage.setItem(DB_KEY,JSON.stringify(d));},_s(){localStorage.setItem(DB_KEY,JSON.stringify(SEED));},getProducts(){return this._g().products;},getProductById(id){return this._g().products.find(p=>p.id===id);},getRentalsByUser(uid){return this._g().rentals.filter(r=>r.userId===uid);},getRentalById(id){return this._g().rentals.find(r=>r.id===id);},addRental(rental){const db=this._g();rental.id='r'+Date.now();rental.startDate=new Date().toISOString().split('T')[0];const e=new Date();e.setMonth(e.getMonth()+parseInt(rental.tenure));rental.endDate=e.toISOString().split('T')[0];rental.status='active';db.rentals.push(rental);const pi=db.products.findIndex(p=>p.id===rental.productId);if(pi>=0){db.products[pi].stock=Math.max(0,db.products[pi].stock-1);db.products[pi].totalRented++;if(db.products[pi].stock===0)db.products[pi].available=false;}const ui=db.users.findIndex(u=>u.id===rental.userId);if(ui>=0)db.users[ui].totalRentals++;this._sv(db);return rental;},updateRental(id,up){const db=this._g();const i=db.rentals.findIndex(r=>r.id===id);if(i>=0){db.rentals[i]={...db.rentals[i],...up};this._sv(db);return db.rentals[i];}},getMaintenanceByUser(uid){return this._g().maintenance.filter(m=>m.userId===uid);},addMaintenance(req){const db=this._g();req.id='m'+Date.now();req.raisedOn=new Date().toISOString().split('T')[0];req.resolvedOn=null;req.status='open';db.maintenance.push(req);this._sv(db);return req;},addDelivery(d){const db=this._g();d.id='d'+Date.now();db.deliveries.push(d);this._sv(db);return d;},login(email,pwd){if(!localStorage.getItem(DB_KEY))this._s();const user=this._g().users.find(u=>u.email===email);if(user&&pwd==='pass123'){const s={...user,role:'user'};localStorage.setItem('rentease_session',JSON.stringify(s));return{success:true,user};}return{success:false};},logout(){localStorage.removeItem('rentease_session');}};
+if(!localStorage.getItem(DB_KEY))DB._s();
+
+// ===================== AUTH =====================
+let SESSION=null;
+function doLogin(){
+  const e=document.getElementById('uE').value,p=document.getElementById('uP').value;
+  const r=DB.login(e,p);
+  if(r.success){
+    SESSION=r.user;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('uName').textContent=SESSION.name.split(' ')[0];
+    document.getElementById('uAvatar').textContent=SESSION.name[0];
+    document.getElementById('welcomeMsg').textContent='Welcome back, '+SESSION.name.split(' ')[0]+'! 👋';
+    renderAll();toast('✅','Logged in successfully!');
+  } else toast('❌','Invalid credentials. Try arjun@example.com / pass123');
+}
+function doLogout(){DB.logout();SESSION=null;document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';}
+window.addEventListener('load',()=>{
+  try{const s=JSON.parse(localStorage.getItem('rentease_session'));
+  if(s&&s.role==='user'){SESSION=s;document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('uName').textContent=SESSION.name.split(' ')[0];document.getElementById('uAvatar').textContent=SESSION.name[0];document.getElementById('welcomeMsg').textContent='Welcome back, '+SESSION.name.split(' ')[0]+'! 👋';renderAll();}}catch(e){}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginScreen').style.display!=='none')doLogin();});
+
+function renderAll(){renderHome();renderBrowse();renderMyRentals();renderMaintenance();renderHistory();}
+
+// ===================== TABS =====================
+function switchTab(tab,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(el)el.classList.add('active');
+}
+
+function sBadge(s){const m={active:'green',returned:'gray','in-progress':'yellow',open:'red',resolved:'green',completed:'green',scheduled:'blue'};return`<span class="badge ${m[s]||'gray'}"><span class="dot"></span> ${s}</span>`;}
+
+// ===================== HOME =====================
+function renderHome(){
+  if(!SESSION)return;
+  const rentals=DB.getRentalsByUser(SESSION.id);
+  const active=rentals.filter(r=>r.status==='active');
+  const maint=DB.getMaintenanceByUser(SESSION.id);
+  const open=maint.filter(m=>m.status!=='resolved');
+  document.getElementById('sumGrid').innerHTML=`
+    <div class="sc"><div class="sc-icon">🔑</div><div class="sc-val">${active.length}</div><div class="sc-label">Active Rentals</div></div>
+    <div class="sc"><div class="sc-icon">💰</div><div class="sc-val">₹${active.reduce((s,r)=>s+r.rentPerMonth,0).toLocaleString()}</div><div class="sc-label">Monthly Spend</div></div>
+    <div class="sc"><div class="sc-icon">🔧</div><div class="sc-val">${open.length}</div><div class="sc-label">Open Requests</div></div>
+    <div class="sc"><div class="sc-icon">📦</div><div class="sc-val">${rentals.length}</div><div class="sc-label">Total Rentals</div></div>`;
+  document.getElementById('homeRentals').innerHTML=active.length?`<div class="dc"><div class="dc-hd"><span class="dc-t">Active Rentals</span><button class="btn-xs" onclick="switchTab('myrentals',document.querySelectorAll('.nav-tab')[2])">View All</button></div><table><thead><tr><th>Product</th><th>Monthly</th><th>Ends On</th><th>Status</th></tr></thead><tbody>${active.map(r=>`<tr><td><b>${r.productName}</b></td><td>₹${r.rentPerMonth.toLocaleString()}/mo</td><td>${r.endDate}</td><td>${sBadge('active')}</td></tr>`).join('')}</tbody></table></div>`:'';
+  document.getElementById('homeMaint').innerHTML=open.length?`<div class="dc"><div class="dc-hd"><span class="dc-t">Open Maintenance</span><button class="btn-xs" onclick="switchTab('maintenance',document.querySelectorAll('.nav-tab')[3])">View All</button></div><table><thead><tr><th>Product</th><th>Issue</th><th>Priority</th><th>Status</th></tr></thead><tbody>${open.map(m=>`<tr><td>${m.productName}</td><td style="color:var(--muted);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.issue}</td><td><span style="font-weight:700;color:${m.priority==='high'?'var(--red)':m.priority==='medium'?'var(--accent2)':'var(--green)'}">${m.priority.toUpperCase()}</span></td><td>${sBadge(m.status)}</td></tr>`).join('')}</tbody></table></div>`:'';
+}
+
+// ===================== BROWSE =====================
+let browseFilter='All';
+function renderBrowse(filter){
+  filter=filter||browseFilter;
+  const prods=DB.getProducts();
+  const filtered=filter==='All'?prods:prods.filter(p=>p.category===filter);
+  document.getElementById('productGrid').innerHTML=filtered.map(p=>`<div class="pc"><div class="pci"><span>${p.icon}</span><span class="av-tag ${p.available?'av-yes':'av-no'}">${p.available?'Available':'Rented Out'}</span></div><div class="pcb"><div class="pc-cat">${p.category}</div><div class="pc-name">${p.name}</div><div class="pc-price">₹${p.rent.toLocaleString()} <span>/month</span></div><div class="pc-dep">Deposit: ₹${p.deposit.toLocaleString()}</div><div class="tcs">${p.tenures.map(t=>`<span class="tc">${t} mo</span>`).join('')}</div><button class="btn btn-p" style="width:100%;padding:.5rem;font-size:.82rem" onclick="openRentModal('${p.id}')" ${p.available?'':'disabled style="opacity:.5;cursor:not-allowed"'}>${p.available?'Rent Now':'Unavailable'}</button></div></div>`).join('');
+}
+function applyFilter(f,el){browseFilter=f;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderBrowse(f);}
+
+// ===================== MY RENTALS =====================
+function renderMyRentals(){
+  if(!SESSION)return;
+  const rentals=DB.getRentalsByUser(SESSION.id).filter(r=>r.status==='active');
+  document.getElementById('myRentalsContent').innerHTML=rentals.length?`<div class="dc"><div class="dc-hd"><span class="dc-t">Active Rentals (${rentals.length})</span></div><table><thead><tr><th>Product</th><th>Tenure</th><th>Monthly</th><th>Deposit</th><th>End Date</th><th>Actions</th></tr></thead><tbody>${rentals.map(r=>`<tr><td><b>${r.productName}</b><br><span style="font-size:.68rem;color:var(--muted)">${r.city}</span></td><td>${r.tenure} mo</td><td style="font-weight:700;color:var(--accent)">₹${r.rentPerMonth.toLocaleString()}</td><td style="color:var(--muted)">₹${r.deposit.toLocaleString()}</td><td>${r.endDate}</td><td style="display:flex;gap:.3rem;flex-wrap:wrap"><button class="btn-xs" onclick="openExtend('${r.id}')">Extend</button><button class="btn-xs danger" onclick="requestReturn('${r.id}')">Return</button></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty"><div class="empty-icon">🏠</div><p>No active rentals.<br><a style="color:var(--accent);cursor:pointer" onclick="switchTab('browse',document.querySelectorAll('.nav-tab')[1])">Browse products →</a></p></div>`;
+}
+
+function openRentModal(pid){
+  if(!SESSION){toast('⚠️','Please log in first');return;}
+  const p=DB.getProductById(pid);
+  document.getElementById('modalTitle').textContent='Rent '+p.name;
+  document.getElementById('modalBody').innerHTML=`<div style="text-align:center;font-size:3.5rem;margin-bottom:.5rem">${p.icon}</div><div style="text-align:center;margin-bottom:1.1rem"><div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent)">₹${p.rent.toLocaleString()}<span style="font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted)">/month</span></div><div style="font-size:.78rem;color:var(--muted)">Security Deposit: ₹${p.deposit.toLocaleString()}</div></div><div class="fg"><label>Select Tenure</label><select id="rm_t">${p.tenures.map(t=>`<option value="${t}">${t} months</option>`).join('')}</select></div><div class="fg"><label>Delivery Address</label><input id="rm_a" placeholder="Full address with landmark"/></div><div class="fg"><label>Preferred Delivery Date</label><input type="date" id="rm_d" min="${new Date().toISOString().split('T')[0]}"/></div><p style="font-size:.72rem;color:var(--muted);margin-bottom:.85rem">✅ Free delivery & installation included</p><div style="display:flex;gap:.5rem"><button class="btn btn-s" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="flex:2" onclick="submitRent('${pid}')">Confirm Rental</button></div>`;
+  openModal();
+}
+function submitRent(pid){
+  const p=DB.getProductById(pid),tenure=parseInt(document.getElementById('rm_t').value),address=document.getElementById('rm_a').value,date=document.getElementById('rm_d').value;
+  if(!address||!date){toast('⚠️','Please fill all fields');return;}
+  const r=DB.addRental({userId:SESSION.id,userName:SESSION.name,productId:pid,productName:p.name,tenure,rentPerMonth:p.rent,deposit:p.deposit,city:SESSION.city||'',address});
+  DB.addDelivery({rentalId:r.id,type:'delivery',scheduledDate:date,status:'scheduled',agent:'TBD'});
+  closeModal();toast('🎉',p.name+' rented! Delivery on '+date);renderAll();
+}
+function openExtend(id){
+  const r=DB.getRentalById(id);
+  document.getElementById('modalTitle').textContent='Extend Rental';
+  document.getElementById('modalBody').innerHTML=`<p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem"><b>${r.productName}</b> — ends ${r.endDate}</p><div class="fg"><label>Extend by</label><select id="ext_m"><option value="3">3 months</option><option value="6">6 months</option><option value="12">12 months</option></select></div><p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem">Additional cost: ₹${r.rentPerMonth.toLocaleString()} × selected months</p><div style="display:flex;gap:.5rem"><button class="btn btn-s" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="flex:2" onclick="submitExtend('${id}')">Confirm</button></div>`;
+  openModal();
+}
+function submitExtend(id){
+  const m=parseInt(document.getElementById('ext_m').value);const r=DB.getRentalById(id);const ne=new Date(r.endDate);ne.setMonth(ne.getMonth()+m);
+  DB.updateRental(id,{endDate:ne.toISOString().split('T')[0],tenure:r.tenure+m});closeModal();toast('✅','Extended by '+m+' months!');renderAll();
+}
+function requestReturn(id){
+  const r=DB.getRentalById(id);
+  document.getElementById('modalTitle').textContent='Schedule Return';
+  document.getElementById('modalBody').innerHTML=`<p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Schedule pickup for <b>${r.productName}</b></p><div class="fg"><label>Preferred Pickup Date</label><input type="date" id="ret_d" min="${new Date().toISOString().split('T')[0]}"/></div><div class="fg"><label>Notes (optional)</label><textarea id="ret_n" placeholder="Any special instructions..."></textarea></div><div style="display:flex;gap:.5rem"><button class="btn btn-s" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="flex:2" onclick="submitReturn('${id}')">Schedule Pickup</button></div>`;
+  openModal();
+}
+function submitReturn(id){
+  const date=document.getElementById('ret_d').value;if(!date){toast('⚠️','Please select a date');return;}
+  DB.updateRental(id,{status:'returned'});DB.addDelivery({rentalId:id,type:'pickup',scheduledDate:date,status:'scheduled',agent:'TBD'});
+  closeModal();toast('✅','Pickup scheduled for '+date+'!');renderAll();
+}
+
+// ===================== MAINTENANCE =====================
+function renderMaintenance(){
+  if(!SESSION)return;
+  const maint=DB.getMaintenanceByUser(SESSION.id);
+  document.getElementById('maintenanceContent').innerHTML=maint.length?`<div class="dc"><div class="dc-hd"><span class="dc-t">Your Requests (${maint.length})</span></div><table><thead><tr><th>Product</th><th>Issue</th><th>Priority</th><th>Raised</th><th>Status</th><th>Resolved</th></tr></thead><tbody>${maint.map(m=>`<tr><td><b>${m.productName}</b></td><td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)">${m.issue}</td><td><span style="font-weight:700;color:${m.priority==='high'?'var(--red)':m.priority==='medium'?'var(--accent2)':'var(--green)'}">${m.priority.toUpperCase()}</span></td><td style="color:var(--muted)">${m.raisedOn}</td><td>${sBadge(m.status)}</td><td style="color:var(--muted)">${m.resolvedOn||'—'}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty"><div class="empty-icon">🔧</div><p>No maintenance requests yet.</p></div>`;
+}
+function openMaintModal(){
+  if(!SESSION)return;
+  const rentals=DB.getRentalsByUser(SESSION.id).filter(r=>r.status==='active');
+  if(!rentals.length){toast('⚠️','No active rentals to raise a request for.');return;}
+  document.getElementById('modalTitle').textContent='New Maintenance Request';
+  document.getElementById('modalBody').innerHTML=`<div class="fg"><label>Select Product</label><select id="mm_r">${rentals.map(r=>`<option value="${r.id}|${r.productName}">${r.productName}</option>`).join('')}</select></div><div class="fg"><label>Priority</label><select id="mm_p"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div><div class="fg"><label>Describe the Issue</label><textarea id="mm_i" placeholder="What is wrong?"></textarea></div><div style="display:flex;gap:.5rem"><button class="btn btn-s" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="flex:2" onclick="submitMaint()">Submit</button></div>`;
+  openModal();
+}
+function submitMaint(){
+  const[rentalId,productName]=document.getElementById('mm_r').value.split('|');const priority=document.getElementById('mm_p').value;const issue=document.getElementById('mm_i').value;
+  if(!issue.trim()){toast('⚠️','Please describe the issue');return;}
+  DB.addMaintenance({rentalId,userId:SESSION.id,userName:SESSION.name,productName,issue,priority});closeModal();toast('✅','Request submitted!');renderMaintenance();renderHome();
+}
+
+// ===================== HISTORY =====================
+function renderHistory(){
+  if(!SESSION)return;
+  const rentals=DB.getRentalsByUser(SESSION.id);
+  document.getElementById('historyContent').innerHTML=rentals.length?`<div class="dc"><div class="dc-hd"><span class="dc-t">All Rentals (${rentals.length})</span></div><table><thead><tr><th>Product</th><th>Tenure</th><th>Monthly</th><th>Total Paid</th><th>Start</th><th>End</th><th>Status</th></tr></thead><tbody>${rentals.map(r=>`<tr><td><b>${r.productName}</b></td><td>${r.tenure} mo</td><td>₹${r.rentPerMonth.toLocaleString()}</td><td style="font-weight:700">₹${(r.rentPerMonth*r.tenure).toLocaleString()}</td><td style="color:var(--muted)">${r.startDate}</td><td>${r.endDate}</td><td>${sBadge(r.status)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty"><div class="empty-icon">📋</div><p>No rental history yet.</p></div>`;
+}
+
+// ===================== MODAL / TOAST =====================
+function openModal(){document.getElementById('modalOv').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('modalOv').classList.remove('open');document.body.style.overflow='';}
+function closeMO(e){if(e.target===document.getElementById('modalOv'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+let tT;
+function toast(icon,msg){document.getElementById('tI').textContent=icon;document.getElementById('tM').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+</html>

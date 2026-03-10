@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RentEase Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#1a1208;--cream:#f7f3ec;--warm:#e8ddd0;--accent:#c8541a;--border:#ddd5c8;--muted:#7a6e62;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.wrap{text-align:center;max-width:720px;width:100%;}
+.logo{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:900;margin-bottom:.4rem;}
+.logo span{color:var(--accent);}
+.tagline{color:var(--muted);margin-bottom:.4rem;font-size:1rem;}
+.sub{color:var(--muted);font-size:.82rem;margin-bottom:2.5rem;}
+.db-box{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:2rem;text-align:left;}
+.db-box h3{font-size:.85rem;font-weight:700;margin-bottom:.75rem;}
+.db-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem;}
+.db-item{background:var(--warm);border-radius:10px;padding:.5rem .4rem;font-size:.72rem;text-align:center;}
+.db-item b{display:block;font-size:1.1rem;color:var(--accent);font-weight:700;}
+.db-note{font-size:.72rem;color:var(--muted);margin-top:.75rem;}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+.portal-card{background:#fff;border:2px solid var(--border);border-radius:24px;padding:2.5rem 2rem;text-align:left;transition:all .3s;}
+.portal-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 20px 48px rgba(200,84,26,.12);}
+.portal-icon{font-size:3rem;margin-bottom:1rem;display:block;}
+.portal-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.5rem;}
+.portal-desc{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:1.1rem;}
+.creds{background:var(--warm);border-radius:10px;padding:.6rem 1rem;font-size:.78rem;color:var(--muted);margin-bottom:1.1rem;}
+.creds b{color:var(--ink);}
+.open-btn{background:var(--accent);color:#fff;border:none;border-radius:100px;padding:.65rem 1.5rem;font-weight:700;font-size:.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;width:100%;}
+.open-btn:hover{background:#a83e10;}
+.reset-btn{background:none;border:1.5px solid var(--border);border-radius:100px;padding:.45rem 1.2rem;font-size:.78rem;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:.75rem;}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+.hint{font-size:.75rem;color:var(--muted);margin-top:.75rem;background:var(--warm);border-radius:10px;padding:.6rem 1rem;}
+@media(max-width:550px){.cards{grid-template-columns:1fr}.db-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Rent<span>Ease</span></div>
+  <p class="tagline">Furniture &amp; Appliance Rental Platform</p>
+  <p class="sub">Both portals share the same database stored in your browser</p>
+
+  <div class="db-box">
+    <h3>📊 Live Database (shared across both portals via localStorage)</h3>
+    <div class="db-grid">
+      <div class="db-item"><b>5</b>Users</div>
+      <div class="db-item"><b>12</b>Products</div>
+      <div class="db-item"><b>7</b>Rentals</div>
+      <div class="db-item"><b>4</b>Maintenance</div>
+      <div class="db-item"><b>7</b>Deliveries</div>
+      <div class="db-item"><b>LIVE</b>CRUD</div>
+    </div>
+    <p class="db-note">Changes made in one portal are visible in the other. Click Reset anytime to restore sample data.</p>
+  </div>
+
+  <div class="cards">
+    <div class="portal-card">
+      <span class="portal-icon">🏠</span>
+      <div class="portal-title">User Portal</div>
+      <div class="portal-desc">Browse products, create rentals, manage active orders, raise maintenance requests, and view rental history.</div>
+      <div class="creds"><b>Email:</b> imran@example.com<br><b>Password:</b> pass123</div>
+      <button class="open-btn" onclick="openPortal('user')">Open User Portal →</button>
+    </div>
+    <div class="portal-card">
+      <span class="portal-icon">⚙️</span>
+      <div class="portal-title">Admin Dashboard</div>
+      <div class="portal-desc">Manage users, products, rentals, maintenance, deliveries, and view live analytics &amp; KPI reports.</div>
+      <div class="creds"><b>Email:</b> admin@rentease.com<br><b>Password:</b> admin123</div>
+      <button class="open-btn" onclick="openPortal('admin')">Open Admin Dashboard →</button>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetDB()">🔄 Reset Database to Sample Data</button>
+  <div class="hint">⚠️ Make sure <b>index.html</b>, <b>user.html</b> and <b>admin.html</b> are all in the <b>same folder</b>. Then double-click index.html to start.</div>
+</div>
+
+<script>
+const SEED={"users":[{"id":"u1","name":"Imran Chaudhary","email":"imran@example.com","phone":"9876543210","city":"Pune","joined":"2025-01-10","status":"active","totalRentals":3},{"id":"u2","name":"Priya Sharma","email":"priya@example.com","phone":"9123456780","city":"Bangalore","joined":"2025-02-14","status":"active","totalRentals":1},{"id":"u3","name":"Rohan Das","email":"rohan@example.com","phone":"9988776655","city":"Mumbai","joined":"2024-11-05","status":"active","totalRentals":5},{"id":"u4","name":"Sneha Patel","email":"sneha@example.com","phone":"9871234560","city":"Hyderabad","joined":"2025-03-01","status":"inactive","totalRentals":0},{"id":"u5","name":"Kiran Nair","email":"kiran@example.com","phone":"9654321870","city":"Chennai","joined":"2025-01-22","status":"active","totalRentals":2}],"products":[{"id":"p1","name":"3-Seater Sofa","category":"Furniture","icon":"🛋️","rent":799,"deposit":2400,"tenures":["3","6","12"],"available":true,"stock":8,"totalRented":34},{"id":"p2","name":"Queen Bed Frame","category":"Bedroom","icon":"🛏️","rent":599,"deposit":1800,"tenures":["3","6","12"],"available":true,"stock":12,"totalRented":28},{"id":"p3","name":"Double-Door Fridge","category":"Appliances","icon":"❄️","rent":1199,"deposit":3500,"tenures":["6","12"],"available":true,"stock":6,"totalRented":19},{"id":"p4","name":"Washing Machine","category":"Appliances","icon":"🫧","rent":899,"deposit":2700,"tenures":["3","6","12"],"available":true,"stock":7,"totalRented":22},{"id":"p5","name":"55\" Smart TV","category":"Electronics","icon":"📺","rent":999,"deposit":2999,"tenures":["3","6","12"],"available":true,"stock":9,"totalRented":31},{"id":"p6","name":"Study Desk & Chair","category":"Furniture","icon":"🪑","rent":449,"deposit":1350,"tenures":["3","6"],"available":true,"stock":15,"totalRented":41},{"id":"p7","name":"Dining Table (4-seater)","category":"Furniture","icon":"🍽️","rent":649,"deposit":1950,"tenures":["6","12"],"available":false,"stock":0,"totalRented":14},{"id":"p8","name":"Microwave Oven","category":"Appliances","icon":"📡","rent":349,"deposit":1050,"tenures":["3","6","12"],"available":true,"stock":11,"totalRented":37},{"id":"p9","name":"Air Conditioner 1.5T","category":"Appliances","icon":"🌬️","rent":1499,"deposit":4500,"tenures":["6","12"],"available":true,"stock":5,"totalRented":16},{"id":"p10","name":"Bookshelf (5 tier)","category":"Furniture","icon":"📚","rent":299,"deposit":900,"tenures":["3","6"],"available":true,"stock":20,"totalRented":52},{"id":"p11","name":"Laptop Desk","category":"Furniture","icon":"💻","rent":249,"deposit":750,"tenures":["3","6","12"],"available":true,"stock":18,"totalRented":45},{"id":"p12","name":"Mini Fridge","category":"Appliances","icon":"🧊","rent":599,"deposit":1800,"tenures":["3","6"],"available":true,"stock":9,"totalRented":23}],"rentals":[{"id":"r1","userId":"u1","userName":"Arjun Mehta","productId":"p1","productName":"3-Seater Sofa","tenure":6,"rentPerMonth":799,"deposit":2400,"startDate":"2025-01-15","endDate":"2025-07-15","status":"active","city":"Pune","address":"12 MG Road, Koregaon Park, Pune"},{"id":"r2","userId":"u1","userName":"Arjun Mehta","productId":"p3","productName":"Double-Door Fridge","tenure":6,"rentPerMonth":1199,"deposit":3500,"startDate":"2025-01-15","endDate":"2025-07-15","status":"active","city":"Pune","address":"12 MG Road, Koregaon Park, Pune"},{"id":"r3","userId":"u2","userName":"Priya Sharma","productId":"p6","productName":"Study Desk & Chair","tenure":3,"rentPerMonth":449,"deposit":1350,"startDate":"2025-02-20","endDate":"2025-05-20","status":"active","city":"Bangalore","address":"34 HSR Layout, Bangalore"},{"id":"r4","userId":"u3","userName":"Rohan Das","productId":"p5","productName":"55\" Smart TV","tenure":12,"rentPerMonth":999,"deposit":2999,"startDate":"2024-11-10","endDate":"2025-11-10","status":"active","city":"Mumbai","address":"7 Andheri West, Mumbai"},{"id":"r5","userId":"u3","userName":"Rohan Das","productId":"p4","productName":"Washing Machine","tenure":6,"rentPerMonth":899,"deposit":2700,"startDate":"2024-11-10","endDate":"2025-05-10","status":"returned","city":"Mumbai","address":"7 Andheri West, Mumbai"},{"id":"r6","userId":"u5","userName":"Kiran Nair","productId":"p2","productName":"Queen Bed Frame","tenure":12,"rentPerMonth":599,"deposit":1800,"startDate":"2025-01-25","endDate":"2026-01-25","status":"active","city":"Chennai","address":"88 Anna Nagar, Chennai"},{"id":"r7","userId":"u3","userName":"Rohan Das","productId":"p9","productName":"Air Conditioner 1.5T","tenure":6,"rentPerMonth":1499,"deposit":4500,"startDate":"2025-03-01","endDate":"2025-09-01","status":"active","city":"Mumbai","address":"7 Andheri West, Mumbai"}],"maintenance":[{"id":"m1","rentalId":"r1","userId":"u1","userName":"Arjun Mehta","productName":"3-Seater Sofa","issue":"Cushion torn on right armrest","priority":"medium","status":"open","raisedOn":"2025-03-01","resolvedOn":null},{"id":"m2","rentalId":"r4","userId":"u3","userName":"Rohan Das","productName":"55\" Smart TV","issue":"Remote not working, HDMI port loose","priority":"high","status":"in-progress","raisedOn":"2025-02-28","resolvedOn":null},{"id":"m3","rentalId":"r6","userId":"u5","userName":"Kiran Nair","productName":"Queen Bed Frame","issue":"Squeaking noise from headboard","priority":"low","status":"resolved","raisedOn":"2025-02-10","resolvedOn":"2025-02-14"},{"id":"m4","rentalId":"r7","userId":"u3","userName":"Rohan Das","productName":"Air Conditioner 1.5T","issue":"AC not cooling efficiently below 24°C","priority":"high","status":"open","raisedOn":"2025-03-05","resolvedOn":null}],"deliveries":[{"id":"d1","rentalId":"r1","type":"delivery","scheduledDate":"2025-01-14","status":"completed","agent":"Ravi Kumar"},{"id":"d2","rentalId":"r2","type":"delivery","scheduledDate":"2025-01-14","status":"completed","agent":"Ravi Kumar"},{"id":"d3","rentalId":"r3","type":"delivery","scheduledDate":"2025-02-19","status":"completed","agent":"Suresh B"},{"id":"d4","rentalId":"r4","type":"delivery","scheduledDate":"2025-11-09","status":"completed","agent":"Ajay Rao"},{"id":"d5","rentalId":"r5","type":"pickup","scheduledDate":"2025-05-11","status":"scheduled","agent":"Ajay Rao"},{"id":"d6","rentalId":"r6","type":"delivery","scheduledDate":"2025-01-24","status":"completed","agent":"Mohan S"},{"id":"d7","rentalId":"r7","type":"delivery","scheduledDate":"2025-02-28","status":"completed","agent":"Ravi Kumar"}]};
+
+function seedIfEmpty(){if(!localStorage.getItem('rentease_db'))localStorage.setItem('rentease_db',JSON.stringify(SEED));}
+function resetDB(){localStorage.setItem('rentease_db',JSON.stringify(SEED));localStorage.removeItem('rentease_session');alert('✅ Database reset! Re-open portals to see fresh data.');}
+function openPortal(type){seedIfEmpty();window.open(type==='admin'?'admin.html':'user.html','_blank');}
+seedIfEmpty();
+</script>
+</body>
+</html>
